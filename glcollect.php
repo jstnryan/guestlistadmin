@@ -158,7 +158,7 @@ END;
 
   function collect_signup($event) {
     //check for duplicates:
-    $query = "SELECT COUNT(*) FROM signups WHERE event = '$_POST[signup_event]' AND name = '$_POST[signup_name]' AND email = '$_POST[signup_email]' AND age = '$_POST[signup_age]' AND gender = '$_POST[signup_gender]'";
+    $query = "SELECT COUNT(*) FROM signups WHERE event = '$_POST[signup_event]' AND name = '" . mysql_real_escape_string($_POST[signup_name]) . "' AND email = '" . mysql_real_escape_string($_POST[signup_email]) . "' AND age = '$_POST[signup_age]' AND gender = '$_POST[signup_gender]'";
     $res = mysql_query($query);
     if (mysql_result($res, 0) > 0) {
       show_error_page('duplicate');
@@ -169,11 +169,11 @@ END;
           if (isset($_POST['signup_custom3'])) { $query .= ", custom3";
             if (isset($_POST['signup_custom4'])) { $query .= ", custom4"; }
           }}}
-      $query .= ") VALUES ('$event->id', '$_POST[signup_name]', '$_POST[signup_email]', '$_POST[signup_age]', '$_POST[signup_gender]'";
-      if (isset($_POST['signup_custom1'])) { $query .= ", '$_POST[signup_custom1]'";
-        if (isset($_POST['signup_custom2'])) { $query .= ", '$_POST[signup_custom2]'";
-          if (isset($_POST['signup_custom3'])) { $query .= ", '$_POST[signup_custom3]'";
-            if (isset($_POST['signup_custom4'])) { $query .= ", '$_POST[signup_custom4]'"; }
+      $query .= ") VALUES ('$event->id', '" . mysql_real_escape_string($_POST[signup_name]) . "', '" . mysql_real_escape_string($_POST[signup_email]) . "', '$_POST[signup_age]', '$_POST[signup_gender]'";
+      if (isset($_POST['signup_custom1'])) { $query .= ", '" . mysql_real_escape_string($_POST[signup_custom1]) . "'";
+        if (isset($_POST['signup_custom2'])) { $query .= ", '" . mysql_real_escape_string($_POST[signup_custom2]) . "'";
+          if (isset($_POST['signup_custom3'])) { $query .= ", '" . mysql_real_escape_string($_POST[signup_custom3]) . "'";
+            if (isset($_POST['signup_custom4'])) { $query .= ", '" . mysql_real_escape_string($_POST[signup_custom4]) . "'"; }
           }}}
       $query .= ")";
       $res2 = mysql_query($query);
