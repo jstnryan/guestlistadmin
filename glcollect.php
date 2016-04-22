@@ -210,6 +210,7 @@ END;
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width" />
     <meta name="description" content="Thank you for signing up on the guest list." />
     <link rel="shortcut icon" href="http://www.betanightclub.com/favicon.ico" type="image/x-icon" />
     <link rel="image_src" href="http://www.betanightclub.com/images/hidden/guestlist/fbicon.jpg" />
@@ -236,10 +237,6 @@ END;
       <h4>The prices for this list are: <?php echo ($age == "21") ? $settings['prices']['21'][$event->pricing_21] : $settings['prices']['18'][$event->pricing_18]; ?>.</h4>
       <p>This sign-up form cuts off at <?= $timestr ?> MST. If you have signed up after <?= $timestr ?>, you will not be added to the guest list. List prices subject to change.</p>
       <hr>
-      <center>
-        <a class="twitter-timeline" href="https://twitter.com/BetaNightclub" data-widget-id="364828822652219392">Tweets by @BetaNightclub</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-      </center>
     </div><!-- #centeredcontent -->
     <script type="text/javascript"> Cufon.now(); </script>
   </body>
