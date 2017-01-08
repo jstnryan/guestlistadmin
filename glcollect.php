@@ -372,7 +372,7 @@ END;
       <div id="masthead">Beta Nightclub</div>
       <h2>$message</h2>
 $content
-      <p>Tickets can be purchased online, until 8pm MST, through Beta Nightclub&apos;s website by <a href="http://www.betanightclub.com/events.php">clicking here</a>, or through <a href="http://www.flavorus.com/profile/Beta/10081">our affiliate Flavorus (Groovetickets)</a>. Tickets can also be purchased at Beta Nightclub&apos;s box-office, day of show, starting at 9pm MST until close.</p>
+      <p>Tickets can be purchased online, until 8pm MST, through Beta Nightclub&apos;s website by <a href="https://www.betanightclub.com/events">clicking here</a>, or through <a href="http://betanightclub.electrostub.com/">our affiliate ElectroStub</a>. Tickets can also be purchased at Beta Nightclub&apos;s box-office, day of show, starting at 9pm MST (7pm Sundays) until close.</p>
     </div><!-- #centeredcontent -->
     <script type="text/javascript"> Cufon.now(); </script>
   </body>
