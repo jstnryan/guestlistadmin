@@ -1,2 +1,4 @@
-# guestlistadmin
-Automated Guest List sign up forms, and back end administration, originally built for Beta Nightclub.
+# guestlistadmin "version 2" (working title)
+Multi-organization, multi-user guest list collection, tracking, and check-in
+
+-- NOT FOR PUBLIC CONSUMPTION --
