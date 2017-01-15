@@ -1,0 +1,30 @@
+Options -Indexes
+
+#Header set X-Hawking "Walk with me through the universe.."
+#Header set X-Tesla "One must be sane to think clearly, but one can think deeply and be quite insane."
+#Header set X-Tesla "If your hate could be turned into electricity, it would light up the whole world."
+
+#Force timezone to MST/MDT (GoDaddy's is MST)
+##THIS LINE DOES NOT WORK ON GODADDY!
+#php_value date.timezone "America/Denver"
+SetEnv TZ America/Denver
+
+Options +FollowSymlinks
+RewriteEngine On
+##GODADDY LIKES THIS TO BE THE *ACTUAL* DIRECTORY WHERE THIS FILE IS LOCATED ie: "RewriteBase /gl"
+##  Without this, it uses absolute path from ~, ie: kittenstitches(root)/betatech/gl/
+#RewriteBase /gl/
+##  However, it is necessary to use root because the URL shortener domain name points directly to the /gl subdirectory
+RewriteBase /
+
+## Redirect shortened url links (keep domain)
+#RewriteCond %{HTTP_HOST} betate\.ch [NC]
+#RewriteCond %{QUERY_STRING} (.*)
+#RewriteRule ^([A-z0-9]{6})$ glcollect.php?e=$1&%1 [L]
+## Redirect shortened url links (redirect domain)
+RewriteCond %{HTTP_HOST} betate\.ch [NC]
+RewriteRule ^(.*)$ http://tech.betanightclub.com/gl/$1 [R=301,L]
+
+## Redirect all "form pages" to glcollect.php
+RewriteCond %{QUERY_STRING} (.*)
+RewriteRule ^([A-z0-9]{6})$ gl/glcollect.php?e=$1&%1 [L]
