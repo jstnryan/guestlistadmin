@@ -1,13 +1,13 @@
 /* guestlistadmin "version 2" - empty database creation file */
 
 CREATE TABLE `organizations` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`name` varchar(255) NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `events` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`organization` INT NOT NULL,
 	`name` varchar(255) NOT NULL,
 	`venue` INT NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE `events` (
 );
 
 CREATE TABLE `venues` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`name` varchar(255),
 	`address` varchar(255),
 	`organization` INT NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE `venues` (
 );
 
 CREATE TABLE `users` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`organization` INT,
 	`name` varchar(255) NOT NULL,
 	`email` varchar(255),
@@ -38,25 +38,25 @@ CREATE TABLE `users` (
 );
 
 CREATE TABLE `groups` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`name` varchar(255) NOT NULL,
 	`organization` INT,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `lists` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`event` INT NOT NULL,
 	`valid_start` DATETIME,
 	`valid_end` DATETIME,
-	`signup_valid` BOOLEAN NOT NULL DEFAULT 'false',
+	`signup_valid` BOOLEAN NOT NULL DEFAULT 0,
 	`signup_limit` INT NOT NULL DEFAULT '-1',
 	`status` INT NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `ages` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`name` varchar(255) NOT NULL,
 	`organization` INT,
 	`age_low` INT,
@@ -65,7 +65,7 @@ CREATE TABLE `ages` (
 );
 
 CREATE TABLE `guests` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`list` INT NOT NULL,
 	`time` TIMESTAMP NOT NULL,
 	`name` varchar(255) NOT NULL,
@@ -80,7 +80,7 @@ CREATE TABLE `guests` (
 );
 
 CREATE TABLE `checkins` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`event` INT NOT NULL,
 	`list` INT NOT NULL,
 	`guest` INT NOT NULL,
@@ -90,13 +90,13 @@ CREATE TABLE `checkins` (
 );
 
 CREATE TABLE `genders` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`name` varchar(255) NOT NULL UNIQUE,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `settings` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`organization` INT NOT NULL,
 	`timezone` varchar(255),
 	`date_format` varchar(255),
@@ -109,19 +109,19 @@ CREATE TABLE `settings` (
 );
 
 CREATE TABLE `shortlinks` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`link` varchar(255) NOT NULL UNIQUE,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `list_status` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`status` varchar(255) NOT NULL UNIQUE,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `guest_fields` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`organization` INT NOT NULL,
 	`name` varchar(255) NOT NULL,
 	`description` varchar(255) NOT NULL,
@@ -130,68 +130,69 @@ CREATE TABLE `guest_fields` (
 );
 
 CREATE TABLE `guest_field_type` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`type` varchar(255) NOT NULL UNIQUE,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `shortlink_list` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`link_id` INT NOT NULL,
 	`list` INT NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `shortlink_user` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`link` INT NOT NULL,
 	`user` INT NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `domains` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`organization` INT NOT NULL,
-	`domain` varchar NOT NULL UNIQUE,
+	`domain` varchar(255) NOT NULL UNIQUE,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `group_members` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`user` INT NOT NULL,
 	`group` INT NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `list_users` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`list` INT NOT NULL,
 	`user` INT NOT NULL,
-	`signup_valid` BOOLEAN NOT NULL DEFAULT 'false',
+	`signup_valid` BOOLEAN NOT NULL DEFAULT 0,
 	`signup_limit` INT DEFAULT '-1',
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `list_groups` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`list` INT NOT NULL,
 	`group` INT NOT NULL,
-	`signup_valid` BOOLEAN NOT NULL DEFAULT 'false',
+	`signup_valid` BOOLEAN NOT NULL DEFAULT 0,
 	`signup_limit_group` INT NOT NULL DEFAULT '-1',
 	`signup_limit_user` INT NOT NULL DEFAULT '-1',
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `currencies` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`code` varchar(3) NOT NULL UNIQUE,
 	`name` varchar(255) NOT NULL UNIQUE,
-	`symbol` varchar(255) NOT NULL,
+	`symbol` varchar(3),
+	`prefix` BOOLEAN NOT NULL DEFAULT 0,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `list_constraint` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`time_begin` TIME,
 	`time_end` TIME,
 	`gender` INT,
@@ -201,28 +202,28 @@ CREATE TABLE `list_constraint` (
 );
 
 CREATE TABLE `list_constraint_group` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`name` varchar(255) NOT NULL,
 	`organization` INT NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `list_constraints` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`constraint_group` INT NOT NULL,
 	`constraint` INT NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `list_constraint_groups` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`list` INT NOT NULL,
 	`constraint_group` INT NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `themes` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`organization` INT NOT NULL,
 	`name` varchar(255) NOT NULL,
 	`filename` varchar(255) NOT NULL UNIQUE,
@@ -230,22 +231,22 @@ CREATE TABLE `themes` (
 );
 
 CREATE TABLE `group_administrators` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`group` INT NOT NULL,
 	`user` INT NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `user_permissions` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`bit` BINARY NOT NULL UNIQUE,
-	`name` varchar NOT NULL UNIQUE DEFAULT '255',
+	`name` varchar(255) NOT NULL UNIQUE,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `user_roles` (
-	`id` INT NOT NULL,
-	`name` varchar NOT NULL UNIQUE DEFAULT '255',
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`name` varchar(255) NOT NULL UNIQUE,
 	`permissions` BINARY NOT NULL,
 	PRIMARY KEY (`id`)
 );

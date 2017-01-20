@@ -10,3 +10,4 @@
 - [ ] Recording of metadata (gender/age/..) for "plus one" guests (currently only recorded as __guests__.additional_guests:integer default(0))
 - [X] Advanced pricing schema (pricing based on sex, time, etc.., ie: "Ladies free before 11, $10 after. Men $15 before 11, $20 after")
 - [X] Concessions for "list administrator" ("Promoter" in current app terminology) - user that can view/admin other user's list submissions?
+- [ ] Reevaluate __guest_fields__ and _guest_field_type___ to allow field groups, multiple groups per organization..
