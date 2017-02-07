@@ -2,7 +2,8 @@
   //connect to db
   function dbconnect() {
     //super simple db connection
-    mysql_connect('68.178.143.77', 'glistformadmin', 'A93!282a') or die('Could not connect: ' . mysql_error());
+    //mysql_connect('68.178.143.77', 'glistformadmin', 'A93!282a') or die('Could not connect: ' . mysql_error());
+    mysql_connect('localhost', 'glistformadmin', 'A93!282a') or die('Could not connect: ' . mysql_error());
     mysql_select_db('glistformadmin') or die('Could not select database');
   } //dbconnect()
   function dbdisconnect() {

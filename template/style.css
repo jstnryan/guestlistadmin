@@ -38,10 +38,8 @@ td {padding:8px 0 4px;vertical-align:top;}
 .smalltext {font-size:11px;}
 .smallertext {font-size:9px;}
 #centeredcontent {background-color:#e4e4e4;color:#737373;margin:0px auto;min-height:100%;padding:0px 30px 30px;width:750px;} /* text-shadow: 1px 1px 1px rgba(0,0,0,0.004); */
-/*
 #masthead {background-image:url('glheader/glheader.jpg');color:transparent;height:150px;text-indent:-9999px;width:750px;}
   #masthead {border-bottom-right-radius:10px;border-bottom-left-radius:10px;}
-*/
 .formtable {width:100%;}
 .formtable td {width:50%;}
 /* styles used only on glcreate */
