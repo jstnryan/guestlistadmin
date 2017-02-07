@@ -3,9 +3,32 @@ RewriteEngine on
 ## If neccessary, the `RewriteBase` directive should be the absolute physical path to the directory that contains this htaccess file.
 # RewriteBase /
 
+###########################################################
+# No website should be prefixed by 'www,' not ever
+###########################################################
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ http://%1%{REQUEST_URI} [R=301,QSA,NC,L]
+
+###########################################################
+# Redirect requests to app website away from app processing
+###########################################################
+RewriteCond %{HTTP_HOST} mysite\.com [NC]
+RewriteRule ^(/|)$ /site/index.html [L,END]
+	## END required to prevent recursive loop
+
+RewriteCond %{HTTP_HOST} mysite\.com [NC]
+RewriteRule ^(.*)$ /site/$1 [L,END]
+
+RewriteCond %{HTTP_HOST} !mysite\.com [NC]
+RewriteRule ^site(.*)$ http://mysite.com$1 [L,END]
+
+
+##########################################################
+# Route requests that don't lead to valid files to Slim ##
+##########################################################
 #RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteRule ^ index.php [QSA,L]
 
-RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule . index.php [L]

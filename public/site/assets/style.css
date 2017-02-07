@@ -1,0 +1,108 @@
+@import url(http://fonts.googleapis.com/css?family=Tenor+Sans);
+html {
+  height: 100%;
+  width: 100%;
+ 
+  background: url(https://unsplash.it/1024/768) no-repeat center center fixed; /* ?random */
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+}
+
+#centered-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  
+}
+#login-container {
+  margin: 0 auto;
+  background-color: #5D92BA;
+  background-color: rgba(93, 146, 186, 0.6);
+  font-family: "Tenor Sans", sans-serif;
+
+  width: 100%;
+}
+
+.login {
+  width: 450px;
+  padding: 20px;
+  position: relative;
+  left: 50%;
+}
+
+.login-heading {
+  font: 1.8em/48px "Tenor Sans", sans-serif;
+  color: white;
+}
+
+.input-txt {
+  width: 100%;
+  padding: 20px 10px;
+  /* background: #5D92BA; */
+  background-color: transparent;
+  border: none;
+  font-size: 1em;
+  color: #fff;
+  border-bottom: 1px dotted rgba(250, 250, 250, 0.4);
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-transition: background-color 0.5s ease-in-out;
+  -o-transition: background-color 0.5s ease-in-out;
+  -webkit-transition: background-color 0.5s ease-in-out;
+  transition: background-color 0.5s ease-in-out;
+}
+.input-txt:-moz-placeholder {
+  color: #ddd;
+}
+.input-txt:-ms-input-placeholder {
+  color: #ddd;
+}
+.input-txt::-webkit-input-placeholder {
+  color: #ddd;
+}
+*/
+.input-txt:focus {
+  background-color: #4478a0;
+}
+
+.login-footer {
+  margin: 10px 0;
+  overlow: hidden;
+  float: left;
+  width: 100%;
+}
+
+.btn {
+  padding: 15px 30px;
+  border: none;
+  background: white;
+  color: #5D92BA;
+}
+
+.btn--right {
+  float: right;
+}
+
+.icon {
+  display: inline-block;
+}
+
+.lnk {
+  font-size: .8em;
+  line-height: 3em;
+  color: white;
+  text-decoration: none;
+}
+
+.floatclear {
+  clear:both;
+}

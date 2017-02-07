@@ -20,10 +20,10 @@ return [
 
         //database
         'db' => [
-            'host' => "localhost",
+            'host' => "127.0.0.1",
             'user' => "user",
-            'password' => "password",
-            'dbname' => "guesttrack"
+            'pass' => "password",
+            'dbname' => "guesttrack",
         ]
     ],
 ];

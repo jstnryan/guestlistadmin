@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SiteName - Do amazing things!</title>
+	</head>
+	<body>
+		<h1>Log In</h1>
+		<p>You must log in to continue.</p>
+		<form action="/login" method="POST">
+			<table class="formtable">
+			  <tr>
+			    <td>
+			      <label for="gllogin_user"><b>Email Address</b>:</label>
+			    </td>
+			    <td>
+			      <input type="email" name="gllogin_user" id="gllogin_user" required="required" value="" />
+			    </td>
+			  </tr>
+			  <tr>
+			    <td>
+			      <label for="gllogin_pass"><b>Password</b>:</label>
+			    </td>
+			    <td>
+			      <input type="password" name="gllogin_pass" id="gllogin_pass" required="required" value="" />
+			    </td>
+			  </tr>
+			  <tr>
+			    <td>
+			    </td>
+			    <td>
+			      <label class="fullwidth"><input type="checkbox" name="gllogin_save" id="gllogin_save" value="save" />Remember me.</label>
+			    </td>
+			  </tr>
+			  <tr>
+			    <td>
+			    </td>
+			    <td>
+			      <input type="submit" />
+			    </td>
+			  </tr>
+			  <tr>
+			    <td>
+			    </td>
+			    <td>
+			      <a href="/login/reset">Forgot something?</a>
+			    </td>
+			  </tr>
+			</table>
+		</form>
+	</body>
+</html>
