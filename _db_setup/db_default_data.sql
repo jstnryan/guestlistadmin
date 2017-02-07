@@ -1,4 +1,7 @@
-INSERT INTO `currencies`(`code`, `name`, `symbol`, `prefix`) VALUES 
+/* guestlistadmin "version 2" - database default data */
+
+INSERT INTO `currencies`(`code`, `name`, `symbol`, `prefix`)
+VALUES 
 	("AED", "United Arab Emirates Dirham", NULL, 0),
 	("AFN", "Afghanistan Afghani", "؋", 0),
 	("ALL", "Albania Lek", "Lek", 0),
@@ -164,7 +167,8 @@ INSERT INTO `currencies`(`code`, `name`, `symbol`, `prefix`) VALUES
 
 
 /* Some common, and default age ranges */
-INSERT INTO `ages`(`name`, `organization`, `age_low`, `age_high`) VALUES
+INSERT INTO `ages`(`name`, `organization`, `age_low`, `age_high`)
+VALUES
 	('All', NULL, NULL, NULL),
 	('Over 21', NULL, 21, NULL),
 	('Over 18', NULL, 18, NULL),
@@ -176,7 +180,8 @@ INSERT INTO `ages`(`name`, `organization`, `age_low`, `age_high`) VALUES
 /* This is seriously fucking stupid, but for some reason clubs still desire to
  * charge differently between the sexes ("lady's night").
  * This list could go on, and on.. */
-INSERT INTO `genders`(`name`) VALUES 
+INSERT INTO `genders`(`name`) 
+VALUES 
 	('All'),
 	('Male'),
 	('Female'),
@@ -186,4 +191,23 @@ INSERT INTO `genders`(`name`) VALUES
 	('Genderfluid'),
 	('Genderqueer'),
 	('Neutrois'),
-	('Nonbinary');
+	('Nonbinary'),
+	('Undisclosed');
+
+/* list_status */
+INSERT INTO `list_status`(`id`, `status`)
+VALUES
+	(1,'Active'),
+	(2,'Paused'),
+	(3,'Closed');
+
+/* user roles */
+INSERT INTO `user_roles`(`id`, `name`, `permissions`)
+VALUES
+	(1, 'god', '0'),
+	(2, 'Organization Administrator', '0');
+
+/* users */
+INSERT INTO `users`(`organization`, `role`, `name_first`, `name_last`, `name_alias`, `email`, `password`, `isactive`, `dt`)
+VALUES
+	(NULL,'1','Justin','Ryan','GOD','jstn@jstnryan.com',NULL,0,NULL);
