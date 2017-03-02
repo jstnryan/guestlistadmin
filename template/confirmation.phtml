@@ -1,0 +1,83 @@
+<?php
+/*
+Guest List Confirmation Template - present a confirmation page to customer
+
+This template uses standard PHP inline echo format (ex: <?= $myVar ?>, <?php echo $something ?>)
+
+The following variables and objects are available in this template:
+* $event (object)
+    * $event->id - system specific ID for event (used when submitting form data)
+    * $event->year - YYYY
+    * $event->month - MM
+    * $event->day - DD
+    * $event->headliner - Headliner
+* $age - text string representing age group of list applied for (ex: "21")
+* $settings (object)
+*/
+?>
+<!DOCTYPE HTML>
+<html>
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <meta name="viewport" content="width=device-width" />
+      <meta name="description" content="Thank you for signing up on the guest list." />
+      <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+      <link rel="image_src" href="/gl/template/fbicon.jpg" />
+      <meta property="og:image" content="http://www.betanightclub.com/fbthumb.jpg" />
+      <meta property="og:description" content="Thank you for signing up on the guest list." />
+      <meta name="author" content="Justin Ryan, justin@betanightclub.com" />
+      <title><?php echo strtoupper(substr(date("D", $showtime),0,2))."/".$event->month."/".$event->day." :: ".$artist."&#39;s Guest List :: ".$event->headliner; ?></title>
+      <link rel="stylesheet" type="text/css" href="glstyle.css">
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-8872962-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </head>
+  <body>
+    <div id="header" class="colorgradient">
+      <a href="http://betanightclub.com" target="_blank"><img id="header-logo" src="header01.png" height="100" alt="Beta Nightclub"></a>
+      <a href="https://www.facebook.com/betanightclub" target="_blank"><img src="header02.png" width="29" height="100" alt="Facebook"></a>
+      <a href="https://www.instagram.com/betanightclub/" target="_blank"><img src="header03.png" width="29" height="100" alt="Instagram"></a>
+      <a href="https://twitter.com/betanightclub" target="_blank"><img src="header04.png" width="31" height="100" alt="Twitter"></a>
+      <a href="https://www.youtube.com/user/BetaNightclub" target="_blank"><img src="header05.png" width="33" height="100" alt="YouTube"></a>
+      <a href="https://www.snapchat.com/add/betanightclub" target="_blank"><img src="header06.png" width="26" height="100" alt="Snapchat"></a>
+      <img src="header07.png" width="15" height="100" alt="">
+    </div>
+    <div class="separator" id="form-separator">
+      <!--Sign Up Bar-->
+    </div>
+    <div id="formsection">
+      <div id="form-text">
+          <p>Thanks for signing up <?php $freeloader = explode(" ", $user, 2); echo $freeloader[0]; ?>!</p>
+          <p>You've been added to the <?php echo $age; ?>+ guest list for <?php echo $event->headliner; ?> on <?php echo date("l", $showtime).", ".$settings['misc']['months'][sprintf('%02d', $event->month)]." ".$settings['misc']['days'][sprintf('%02d', $event->day)]; ?>.</p>
+          <p>The prices for this list are: <?php echo ($age == "21") ? $settings['prices']['21'][$event->pricing_21] : $settings['prices']['18'][$event->pricing_18]; ?>.</p>
+          <p>This sign-up form cuts off at <?= $timestr ?> MST. If you have signed up after <?= $timestr ?>, you will not be added to the guest list. List prices subject to change.</p>
+      </div>
+    </div>
+    <div class="separator" id="link-separator">
+      <!--Links Bar-->
+    </div>
+    <div id="linksection" class="clear">
+      <!--links section (purple)-->
+      <img class="featuredimage" src="7.jpg">
+      <div id="linktext">
+        <div id="link-text">
+          <div class="link-user">Beta</div>
+          <div class="link-url">
+            <a href="http://betanightclub.com" target="_blank">http://betanightclub.com</a><br />
+            <a href="http://facebook.com/betanightclub" target="_blank">http://facebook.com/betanightclub</a><br />
+            <a href="http://twitter.com/betanightclub" target="_blank">http://twitter.com/betanightclub</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="http://betanightclub.com"><img id="footer-logo" src="footer-logo.png"></a>
+      <div id="footer-info">
+        <div id="footer-address"><a href="">1909 Blake St, Denver CO 80202</a></div>
+        <div id="footer-phone"><a href="013033831909" type="tel">303-383-1909</a></div>
+      </div>
+    </div>
+  </body>
+</html>

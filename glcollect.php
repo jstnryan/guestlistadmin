@@ -16,24 +16,33 @@
 
       $title = getlancedatestring($event->year, $event->month, $event->day)." :: ".$artist->name."&#39;s Guest List :: ".$event->headliner;
 
+      $template = new stdClass();
+      $template->day = getdayofweek($event->year, $event->month, $event->day);
+      $template->month = getmonthname($event->year, $event->month, $event->day);
+
+/*
       $banner = "";
       if (file_exists('glheader/glheader_'.$artist->id.'.jpg')) { $banner = '<style type="text/css">#masthead {background-image:url("glheader/glheader_'.$artist->id.'.jpg")};</style>'; }
+*/
 
       $links = "";
       if (!empty($artist->artistlinks)) {
+        $links .= '<div class="link-user">'.$artist->name.'</div><div class="link-url">';
         foreach (explode("\n", $artist->artistlinks) as $val) { $links .= '<a href="'.$val.'" target="_blank">'.$val.'</a><br />'; }
-        $links .= '<br />';
-      }
-      if (!empty($artist->promoterlinks)) {
-        $arr = explode(',', $artist->promoterlinks);
-        foreach ($arr as $id) {
-          if ($id == $artist->id) { continue; } //prevent adding promoter's own links twice
+        $links .= '</div>';
+      } else {
+        if (!empty($artist->promoterlinks)) {
+          $arr = explode(',', $artist->promoterlinks);
+          foreach ($arr as $id) {
+            if ($id == $artist->id || $id == 3) { continue; } //prevent adding promoter's own links twice (and Beta's)
 
-          $lnk = dbgetpromoterlinksbyid($id);
-          if (!empty($lnk)) {
-            foreach (explode("\n", $lnk) as $value) { $links .= '<a href="'.$value.'" target="_blank">'.$value.'</a><br />'; }
+            $lnk = dbgetpromoterlinksbyid($id);
+            if (!empty($lnk)) {
+              $links .= '<div class="link-user">'.dbgetusernamebyid($id).'</div><div class="link-url">';
+              foreach (explode("\n", $lnk) as $value) { $links .= '<a href="'.$value.'" target="_blank">'.$value.'</a><br />'; }
+              $links .= '</div>';
+            }
           }
-          $links .= '<br />';
         }
       }
 
@@ -57,100 +66,20 @@
         $option_21plus = '';
       } else {
         $price21 = $settings['prices']['21'][$event->pricing_21];
-        $option_21plus = '<br /><label><input type="radio" name="signup_age" value="21" id="signup_age_21" required="required" >21+</label>';
+        $option_21plus = '<input type="radio" name="signup_age" value="21" id="signup_age_21" required="required"><label for="signup_age_21">21+</label>';
       }
       if ($limit18) {
         $price18 = "<b>THE 18+ LIST IS CURRENTLY FULL.</b>";
         $option_18plus = '';
       } else {
         $price18 = $settings['prices']['18'][$event->pricing_18];
-        $option_18plus = '<br /><span class="smalltext">This is a 21+ only event. Please confirm that you are over the age of 21.</span>';
+        $option_18plus = '<br><span class="smallertext">This is a 21+ only event. Please confirm that you are over the age of 21.</span>';
         if ($event->pricing_18 != "NN,NN") {
-          $option_18plus = '<br /><label><input type="radio" name="signup_age" value="18" id="signup_age_18" required="required" />18+</label>';
+          $option_18plus = '<input type="radio" name="signup_age" value="18" id="signup_age_18" required="required"><label for="signup_age_18">18+</label>';
         }
       }
 
-      $output = <<<END
-<!DOCTYPE HTML>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="Sign-up on the guest list for Beta Nightclub by following this link." />
-    <link rel="shortcut icon" href="http://www.betanightclub.com/favicon.ico" type="image/x-icon" />
-    <link rel="image_src" href="http://tech.betanightclub.com/gl/fbicon.jpg" />
-    <meta property="og:image" content="http://tech.betanightclub.com/gl/fbicon.jpg" />
-    <meta property="og:title" content="$title" />
-    <meta property="og:url" content="http://tech.betanightclub.com/gl/$event->id" />
-    <meta property="og:type" content="article" />
-    <meta property="article:expiration_time" content="{$event->year}-{$event->month}-{$event->day}T{$settings['expiration']['hour']}:{$settings['expiration']['minute']}-07:00" />
-    <meta property="og:site_name" content="Beta Nightclub" />
-    <meta property="og:description" content="Sign-up on the guest list for Beta Nightclub by following this link." />
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:site" content="@betanightclub">
-    <meta name="twitter:creator" content="@lb1justin">
-    <meta name="twitter:title" content="$title">
-    <meta name="twitter:description" content="Use this page to sign-up on for guest list access to Beta Nightclub on {$event->month}/{$event->day} featuring {$event->headliner}, courtesy of {$artist->name}.">
-    <meta name="twitter:image" content="http://www.betanightclub.com/images/hidden/guestlist/fbicon.jpg">
-    <meta name="author" content="Betatech, justin@betanightclub.com" />
-    <title>$title</title>
-    <link href='glstyles.css' type='text/css' rel='stylesheet' />
-    <script src="http://betanightclub.com/js/cufon-yui.js" type="text/javascript"></script>
-    <script src="http://betanightclub.com/js/Social_Gothic_400.font.js" type="text/javascript"></script>
-    <script src="http://betanightclub.com/js/helper.js" type="text/javascript"></script>
-    $banner
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-8872962-6', 'auto');
-      ga('send', 'pageview');
-    </script>
-  </head>
-  <body>
-    <div id="centeredcontent">
-      <div id="masthead">Beta Nightclub</div>
-      <h2>$title</h2>
-      <p>This form allows you guest entry on {$artist->name}&#39;s list at the guest list door for the following lists:
-        <br />21+: $price21
-        <br />18+: $price18
-      </p>
-      $links
-      <hr />
-      <form action="?a=signup" method="POST" id="signup_form">
-        <table class="formtable">
-          <tr>
-            <td>
-              <input type="hidden" name="signup_event" value="{$event->id}" />
-              <label for="signup_name" class="formtitle cfont">First &amp; Last Name:</label>
-              <br /><input type="text" name="signup_name" value="" id="signup_name" autofocus="autofocus" required="required" />
-            </td>
-            <td>
-              <label for="signup_email"><span class="formtitle cfont">Email Address:</span> <span class="smallertext">Checked for validity</span></label>
-              <br /><input type="email" name="signup_email" value="" id="signup_email" required="required" />
-            </td>
-          </tr>
-          <tr>
-            <td class="halfwidth">
-              <label for="signup_age" class="formtitle cfont">Age:</label>
-              $option_21plus
-              $option_18plus
-            </td>
-            <td class="halfwidth">
-              <label for="signup_gender" class="formtitle cfont">Gender:</label>
-              <br /><label><input type="radio" name="signup_gender" value="female" id="signup_gender_female" required="required" />Female</label>
-              <br /><label><input type="radio" name="signup_gender" value="male" id="signup_gender_male" />Male</label>
-            </td>
-          </tr>
-$extrafields
-        </table>
-        <input type="submit" name="signup_submit" value="Submit" />
-        <p class="smalltext">By filling out this form you agree to allow Beta Nightclub (including {$artist->name}$promoter) to send you email updates about upcoming events and special offers. [Beta Nightclub and associated promotion groups do not share your personal information.]</p>
-      </form>
-      <hr />
-    </div><!-- #centeredcontent -->
-    <script type="text/javascript"> Cufon.now(); </script>
-  </body>
-</html>
-END;
+      $output = require 'template/collection.phtml';
     } //end while (SQL query)
 
     echo $output;
@@ -205,43 +134,7 @@ END;
       $timestr = $settings['expiration']['hour'].":".$settings['expiration']['minute']."AM";
     }
 
-?>
-<!DOCTYPE HTML>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="Thank you for signing up on the guest list." />
-    <link rel="shortcut icon" href="http://www.betanightclub.com/favicon.ico" type="image/x-icon" />
-    <link rel="image_src" href="http://www.betanightclub.com/images/hidden/guestlist/fbicon.jpg" />
-    <meta property="og:image" content="http://www.betanightclub.com/fbthumb.jpg" />
-    <meta property="og:description" content="Thank you for signing up on the guest list." />
-    <meta name="author" content="Justin Ryan, justin@betanightclub.com" />
-    <title><?php echo strtoupper(substr(date("D", $showtime),0,2))."/".$event->month."/".$event->day." :: ".$artist."&#39;s Guest List :: ".$event->headliner; ?></title>
-    <link href='glstyles.css' type='text/css' rel='stylesheet' />
-    <script src="http://betanightclub.com/js/cufon-yui.js" type="text/javascript"></script>
-    <script src="http://betanightclub.com/js/Social_Gothic_400.font.js" type="text/javascript"></script>
-    <script src="http://betanightclub.com/js/helper.js" type="text/javascript"></script>
-    <?php echo $banner; ?>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-8872962-6', 'auto');
-      ga('send', 'pageview');
-    </script>
-  </head>
-  <body>
-    <div id="centeredcontent">
-      <div id="masthead">Beta Nightclub</div>
-      <h2>Thanks for signing up <?php $freeloader = explode(" ", $user, 2); echo $freeloader[0]; ?>!</h1>
-      <h3>You've been added to the <?php echo $age; ?>+ guest list for <?php echo $event->headliner; ?> on <?php echo date("l", $showtime).", ".$settings['misc']['months'][sprintf('%02d', $event->month)]." ".$settings['misc']['days'][sprintf('%02d', $event->day)]; ?>.</h3>
-      <h4>The prices for this list are: <?php echo ($age == "21") ? $settings['prices']['21'][$event->pricing_21] : $settings['prices']['18'][$event->pricing_18]; ?>.</h4>
-      <p>This sign-up form cuts off at <?= $timestr ?> MST. If you have signed up after <?= $timestr ?>, you will not be added to the guest list. List prices subject to change.</p>
-      <hr>
-    </div><!-- #centeredcontent -->
-    <script type="text/javascript"> Cufon.now(); </script>
-  </body>
-</html>
-<?php
+    require 'template/confirmation.phtml';
   } //show_confirmation_page()
 
   function show_error_page($error) {
@@ -345,40 +238,8 @@ END;
 END;
         break;
     }
-    $output = <<<END
-<!DOCTYPE HTML>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description" content="$message" />
-    <link rel="shortcut icon" href="http://www.betanightclub.com/favicon.ico" type="image/x-icon" />
-    <link rel="image_src" href="http://www.betanightclub.com/images/hidden/guestlist/fbicon.jpg" />
-    <meta property="og:image" content="http://www.betanightclub.com/fbthumb.jpg" />
-    <meta property="og:description" content="$message" />
-    <meta name="author" content="Justin Ryan, justin@betanightclub.com" />
-    <title>$title</title>
-    <link href='glstyles.css' type='text/css' rel='stylesheet' />
-    <script src="http://betanightclub.com/js/cufon-yui.js" type="text/javascript"></script>
-    <script src="http://betanightclub.com/js/Social_Gothic_400.font.js" type="text/javascript"></script>
-    <script src="http://betanightclub.com/js/helper.js" type="text/javascript"></script>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-8872962-6', 'auto');
-      ga('send', 'pageview', '{$_SERVER['REQUEST_URI']}/$error');
-    </script>
-  </head>
-  <body>
-    <div id="centeredcontent">
-      <div id="masthead">Beta Nightclub</div>
-      <h2>$message</h2>
-$content
-      <p>Tickets can be purchased online, until 8pm MST, through Beta Nightclub&apos;s website by <a href="https://www.betanightclub.com/events">clicking here</a>, or through <a href="http://betanightclub.electrostub.com/">our affiliate ElectroStub</a>. Tickets can also be purchased at Beta Nightclub&apos;s box-office, day of show, starting at 9pm MST (7pm Sundays) until close.</p>
-    </div><!-- #centeredcontent -->
-    <script type="text/javascript"> Cufon.now(); </script>
-  </body>
-</html>
-END;
-
+    $output = require 'template/error.phtml';
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     echo $output;
   } //show_error_page()
 

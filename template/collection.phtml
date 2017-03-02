@@ -1,0 +1,158 @@
+<?php
+/*
+Guest List Collection Template - present a form to gather data from customer
+
+Templates follow the PHP Heredoc format: http://php.net/manual/en/language.types.string.php#language.types.string.syntax.heredoc
+Variables are parsed using PHP double quote syntax (ex: "My $variable, your {$you->variable}, our \'\$variables\'")
+
+The following variables and objects are available in this template:
+* $artist (object)
+    * $artist->name - <User's Name>
+    * $artist->id - system specific ID for artist (for retrieving artist-specific images, for example)
+    * $artist->artistlinks - array of artist promotional links (see also: $links)
+    * $artist->promoterlinks - array of associated promoter promotional links (see also: $links)
+    * $artist->association - system specific ID for promoter (for retrieving promoter-specific images, for example)
+* $links - HTML formatted artist and promoter promotional links
+* $extrafields - HTML formatted form fields for collecting custom data
+* $event (object)
+    * $event->id - system specific ID for event (used when submitting form data)
+    * $event->year - YYYY
+    * $event->month - MM
+    * $event->day - DD
+    * $event->headliner - Headliner
+* $title - <Day of Week> | MMM DD :: <User>'s Guest List :: <Headliner> (ex: "Thursday | Feb 09 :: Global Dance's Guest List :: TJR")
+* $price21 - text representation of event price for 21+
+* $price18 - text representation of event price for 18+
+* $option_21plus - HTML for adding radio button to select 21 as age group (if available)
+* $option_18plus - HTML for adding radio button to select 18 as age group (if available)
+* $settings (object)
+*/
+return <<<END
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="Sign-up on the guest list for Beta Nightclub by following this link." />
+    <link rel="shortcut icon" href="http://www.betanightclub.com/favicon.ico" type="image/x-icon" />
+    <link rel="image_src" href="http://tech.betanightclub.com/gl/fbicon.jpg" />
+    <meta property="og:image" content="http://tech.betanightclub.com/gl/fbicon.jpg" />
+    <meta property="og:title" content="$title" />
+    <meta property="og:url" content="http://tech.betanightclub.com/gl/$event->id" />
+    <meta property="og:type" content="article" />
+    <meta property="article:expiration_time" content="{$event->year}-{$event->month}-{$event->day}T{$settings['expiration']['hour']}:{$settings['expiration']['minute']}-07:00" />
+    <meta property="og:site_name" content="Beta Nightclub" />
+    <meta property="og:description" content="Sign-up on the guest list for Beta Nightclub by following this link." />
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@betanightclub">
+    <meta name="twitter:creator" content="@lb1justin">
+    <meta name="twitter:title" content="$title">
+    <meta name="twitter:description" content="Use this page to sign-up on for guest list access to Beta Nightclub on {$event->month}/{$event->day} featuring {$event->headliner}, courtesy of {$artist->name}.">
+    <meta name="twitter:image" content="http://www.betanightclub.com/images/hidden/guestlist/fbicon.jpg">
+    <meta name="author" content="Betatech, justin@betanightclub.com" />
+    <title>$title</title>
+    <link rel="stylesheet" type="text/css" href="template/glstyle.css">
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-8872962-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </head>
+  <body>
+    <div id="header" class="colorgradient">
+      <a href="http://betanightclub.com" target="_blank"><img id="header-logo" src="template/header01.png" height="100" alt="Beta Nightclub"></a>
+      <a href="https://www.facebook.com/betanightclub" target="_blank"><img src="template/header02.png" width="29" height="100" alt="Facebook"></a>
+      <a href="https://www.instagram.com/betanightclub/" target="_blank"><img src="template/header03.png" width="29" height="100" alt="Instagram"></a>
+      <a href="https://twitter.com/betanightclub" target="_blank"><img src="template/header04.png" width="31" height="100" alt="Twitter"></a>
+      <a href="https://www.youtube.com/user/BetaNightclub" target="_blank"><img src="template/header05.png" width="33" height="100" alt="YouTube"></a>
+      <a href="https://www.snapchat.com/add/betanightclub" target="_blank"><img src="template/header06.png" width="26" height="100" alt="Snapchat"></a>
+      <img src="template/header07.png" width="15" height="100" alt="">
+    </div>
+    <div class="separator" id="featured-separator">
+    </div>
+    <div id="featuredsection">
+      <!--title section (blue)-->
+      <img class="featuredimage" src="template/feature-{$template->day}.jpg">
+      <div id="featuredinfo">
+        <div id="featured-info">
+          <div id="featured-date">{$template->day} {$template->month} {$event->day}</div>
+          <div id="featured-headliner">{$event->headliner}</div>
+          <div id="featured-user">{$artist->name}'s Guest List</div>
+        </div>
+      </div>
+      <div id="tickettab">
+        <a href="http://betanightclub.electrostub.com/eventList.cfm" target="_blank">
+          <img src="template/btn-ftr-tickets.jpg" width="78" height="51" alt="Tickets">
+        </a>
+        <a href="https://www.betanightclub.com/vip/" target="_blank">
+          <img src="template/btn-ftr-bottle.jpg" width="126" height="51" alt="Bottle Service">
+        </a>
+      </div>
+    </div>
+    <div class="separator" id="form-separator">
+    </div>
+    <div id="formsection">
+      <div id="form-text">
+        This form allows you guest entry on Reload's list at the guest list door for the following lists:
+        <ul id="form-lists">
+          <li>21+: $price21</li>
+          <li>18+: $price18</li>
+        </ul>
+        <form action="?a=signup" method="POST" id="signup_form">
+          <fieldset>
+            <ol>
+              <li>
+                <input type="hidden" name="signup_event" value="{$event->id}" />
+                <label for="signup_name" class="hidden">First &amp; Last Name:</label>
+                <input type="text" name="signup_name" value="" id="signup_name" class="form-input" title="name" tabindex="1" value="" placeholder="* First & Last Name" required="required" autofocus="autofocus">
+              </li>
+              <li>
+                <label for="signup_email" class="hidden">Email Address:</label>
+                <input type="email" name="signup_email" value="" id="signup_email" class="form-input" title="email" tabindex="2" value="" placeholder="* Email Address" required="required">
+              </li>
+              <li>
+                $option_21plus
+                $option_18plus
+              </li>
+              <li>
+                <input type="radio" name="signup_gender" value="female" id="signup_gender_female" required="required"><label for="signup_gender_female">Female</label>
+                <input type="radio" name="signup_gender" value="male" id="signup_gender_male" required="required"><label for="signup_gender_male">Male</label>
+              </li>
+$extrafields
+              <li>
+                <input type="submit" name="signup_submit" value="Signup" id="form-submit"><!-- vaue="Submit" -->
+                <p class="smallertext">By submitting this form you agree to allow Beta Nightclub (including {$artist->name}$promoter) to send you email updates about upcoming events and special offers. [Beta Nightclub and associated promotion groups do not share your personal information.]</p>
+              </li>
+            </ol>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+    <div class="separator" id="link-separator">
+    </div>
+    <div id="linksection" class="clear">
+      <!--links section (purple)-->
+      <img class="featuredimage" src="template/7.jpg">
+      <div id="linktext">
+        <div id="link-text">
+$links
+          <div class="link-user">Beta</div>
+          <div class="link-url">
+            <a href="http://betanightclub.com" target="_blank">http://betanightclub.com</a><br />
+            <a href="http://facebook.com/betanightclub" target="_blank">http://facebook.com/betanightclub</a><br />
+            <a href="http://twitter.com/betanightclub" target="_blank">http://twitter.com/betanightclub</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="http://betanightclub.com"><img id="footer-logo" src="template/footer-logo.png"></a>
+      <div id="footer-info">
+        <div id="footer-address"><a href="">1909 Blake St, Denver CO 80202</a></div>
+        <div id="footer-phone"><a href="013033831909" type="tel">303-383-1909</a></div>
+      </div>
+    </div>
+  </body>
+</html>
+END;
+?>

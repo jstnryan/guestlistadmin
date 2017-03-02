@@ -53,7 +53,7 @@
             </td>
             <td>
               <textarea name="account_links" id="account_links"><?= $user->artistlinks ?></textarea><br />
-              <span class="smalltext">One link per line; use full URL ("http://facebook.com/jstnryan").</span><br />
+              <span class="smalltext">One link per line; <b>MUST use full URL</b> ("<b>http://</b>facebook.com/jstnryan").</span><br />
               <span class="smalltext">These are the links which will appear on your generated guest list pages after guests successfully sign up on your list.</span>
             </td>
           </tr>

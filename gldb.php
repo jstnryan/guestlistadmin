@@ -3,6 +3,7 @@
   function dbconnect() {
     //super simple db connection
     mysql_connect('68.178.143.77', 'glistformadmin', 'A93!282a') or die('Could not connect: ' . mysql_error());
+    //mysql_connect('127.0.0.1', 'glistformadmin', 'A93!282a') or die('Could not connect: ' . mysql_error());
     mysql_select_db('glistformadmin') or die('Could not select database');
   } //dbconnect()
   function dbdisconnect() {
@@ -98,10 +99,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 
   function getdayofweek($year, $month, $day) {
-    //EX: TH
+    //EX: Thursday
     //return strtoupper(substr(date("D", mktime(21,0,0,$month,$day,$year)),0,2));
     return date("l", mktime(21,0,0,$month,$day,$year));
   } //getdayofweek($year, $month, $day)
+  function getmonthname($year, $month, $day) {
+    //EX: January
+    return date("F", mktime(21,0,0,$month,$day,$year));
+  }
   function getlancedatestring($year, $month, $day) {
     return date('l | M d', mktime(21,0,0,$month,$day,$year));
   } //getlancedatestring($year, $month, $day)

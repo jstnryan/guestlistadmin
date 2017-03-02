@@ -1,0 +1,65 @@
+<?php
+/*
+Guest List Error Template - inform the customer of an error message
+
+Templates follow the PHP Heredoc format: http://php.net/manual/en/language.types.string.php#language.types.string.syntax.heredoc
+Variables are parsed using PHP double quote syntax (ex: "My $variable, your {$you->variable}, our \'\$variables\'")
+
+The following variables and objects are available in this template:
+* $title - short title of error
+* $message - long title of error
+* $content - HTML long description of error
+* $error - system specific, single word error ID descriptor (used for analytics purposes, for example)
+* $settings (object)
+*/
+return <<<END
+<!DOCTYPE HTML>
+<html>
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <meta name="description" content="$message" />
+      <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+      <link rel="image_src" href="/gl/template/fbicon.jpg" />
+      <meta property="og:image" content="/gl/template/fbthumb.jpg" />
+      <meta property="og:description" content="$message" />
+      <meta name="author" content="Justin Ryan, justin@betanightclub.com" />
+      <title>$title</title>
+      <link rel="stylesheet" type="text/css" href="template/glstyle.css">
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-8872962-6', 'auto');
+      ga('send', 'pageview', '{$_SERVER['REQUEST_URI']}/$error');
+    </script>
+  </head>
+  <body>
+    <div id="header" class="colorgradient">
+      <a href="http://betanightclub.com" target="_blank"><img id="header-logo" src="template/header01.png" height="100" alt="Beta Nightclub"></a>
+      <a href="https://www.facebook.com/betanightclub" target="_blank"><img src="template/header02.png" width="29" height="100" alt="Facebook"></a>
+      <a href="https://www.instagram.com/betanightclub/" target="_blank"><img src="template/header03.png" width="29" height="100" alt="Instagram"></a>
+      <a href="https://twitter.com/betanightclub" target="_blank"><img src="template/header04.png" width="31" height="100" alt="Twitter"></a>
+      <a href="https://www.youtube.com/user/BetaNightclub" target="_blank"><img src="template/header05.png" width="33" height="100" alt="YouTube"></a>
+      <a href="https://www.snapchat.com/add/betanightclub" target="_blank"><img src="template/header06.png" width="26" height="100" alt="Snapchat"></a>
+      <img src="template/header07.png" width="15" height="100" alt="">
+    </div>
+    <div class="separator" id="form-separator">
+      <!--Sign Up Bar-->
+    </div>
+    <div id="formsection">
+      <div id="form-text">
+            <p><b>$message</b></p>
+        $content
+        <p>Tickets can be purchased online, until 8pm MST, through our website. Tickets can also be purchased at the box-office, day of show, starting at 9pm MST (7pm Sundays) until close.</p>
+        <p>Tickets can be purchased online, until 8pm MST, through <a href="https://www.betanightclub.com/events">Beta Nightclub&apos;s website</a>, or through <a href="http://betanightclub.electrostub.com/">our affiliate ElectroStub</a>. Tickets can also be purchased at Beta Nightclub&apos;s box-office, day of show, starting at 9pm MST (7pm Sundays) until close.</p>
+      </div>
+    </div>
+    <div id="footer">
+      <a href="http://betanightclub.com"><img id="footer-logo" src="template/footer-logo.png"></a>
+      <div id="footer-info">
+        <div id="footer-address"><a href="">1909 Blake St, Denver CO 80202</a></div>
+        <div id="footer-phone"><a href="013033831909" type="tel">303-383-1909</a></div>
+      </div>
+    </div>
+  </body>
+</html>
+END;
+?>
