@@ -1,0 +1,67 @@
+
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="http://tech.betanightclub.com/favicon.ico" type="image/x-icon" />
+    <meta name="author" content="Justin Ryan, justin@betanightclub.com" />
+    <title>Beta Nightclub Guest List Form Administration Utility</title>
+    <link href='http://tech.betanightclub.com/gl/glstyles.css' type='text/css' rel='stylesheet' />
+    <style>
+      img {border:1px solid black;}
+    </style>
+<!--
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-8872962-5', 'auto');
+      ga('send', 'pageview');
+    </script>
+-->
+  </head>
+  <body>
+    <div id="centeredcontent">
+      <br />
+      <h1>How to Ensure Promoter Credit with Guest List Links</h1>
+      <p>As promoters for Beta, you've probably noticed that on certain guest list links there is a space for a guest to enter the name of the Street Team member or Promoter that referred them. This is to ensure that each of you gets proper credit for all of your online and social media referral efforts. The following image is an example of what that might look like.</p>
+      <img src="promotercredit01.png" height="180" width="550">
+      <p>We all know, though, that people can be pretty unreliable, stupid, lazy, or whatever other qualities that would prevent them from actually taking the time to type in the correct name every time they sign up. So, to help with this, when I wrote the guest list collection software for Beta, I built in a cool little trick to make sure <strong>your name</strong> always gets properly inserted, automatically, every time someone clicks on one of your promotional links. You get proper credit each time someone signs up, and all you have to do is put in a little extra work when posting your links. In the next steps, I'll show you exactly how to make sure it's your name in that box.</p>
+      <ol>
+        <li>
+          <h3>Get The Promotional Link</h3>
+          <p>We're all familiar with these by now, they're the thing that that ends up in the address bar of your web browser.</p>
+          <img src="promotercredit02.png" height="75" width="550">
+          <p>They come in two different styles, for example:</p>
+          <ul>
+            <li>Full format: <a href="http://tech.betanightclub.com/gl/pcy3xy" target="_blank">http://tech.betanightclub.com/gl/pcy3xy</a></li>
+            <li>Short link: <a href="http://betate.ch/pcy3xy" target="_blank">http://betate.ch/pcy3xy</a></li>
+          </ul>
+          <p>They both do the same thing, the short link is just handy for posting on Twitter and ths such. The important bit of the link is the last six characters ("pcy3xy"), which is a special sequence that determines which list the link connects to.</p>
+        </li>
+        <li>
+          <h3>Encode Your Name</h3>
+          <p>Because we're making web links (called a "URL"), we have to 'encode' everything a certain way. Encoding things basically just means to make sure the computer reads it correctly. If you really want details, you can read up about <a href="https://en.wikipedia.org/wiki/Percent-encoding" target="_blank">Percent Encoding on Wikipedia</a>.</p>
+          <p>In this case, we're going to encode our name. With most names it's pretty simple; since almost all western names are just a first and last part, we just encode the space between them as "<strong>%20</strong>" (percent sign, number two, number zero). For example, my name, "<strong>Justin Ryan</strong>," becomes "<strong>Justin%20Ryan</strong>" with no spaces. Your name is probably just as easy to encode, but if it includes any other characters, like apostrophes (which are encoded as "<strong>%27</strong>"), it's probably easiest to just use a utility to encode your name automatically. You can <a href="http://meyerweb.com/eric/tools/dencoder/" target="_blank">click here for a pretty simple online encoder</a>, use it to encode your name, and then come back here for the last two steps.</p>
+        </li>
+        <li>
+          <h3>Assemble Your Custom Link</h3>
+          <p>Now we're going to add our name, plus a little extra magic, to the original link, to create a custom link that magically fills in our name on the guest list form. There are three parts to assemble:</p>
+          <ol>
+            <li>The original link from step one, for example: <strong>http://betate.ch/pcy3xy</strong>. Either the short link, or the full link will work.</li>
+            <li>A little bit of magic, <strong>?promoter=</strong>, that's a question mark, the word 'promoter', and an equal sign.</li>
+            <li>Your encoded name from step two, in my case <strong>Justin%20Ryan</strong>.</li>
+          </ol>
+          <p>All we have to do is add the three parts together in that order. For example, for my name the custom link becomes: <a href="http://betate.ch/pcy3xy?promoter=Justin%20Ryan" target="_blank">http://betate.ch/pcy3xy?promoter=Justin%20Ryan</a>. Here's what that would look like with the full link:</p>
+          <img src="promotercredit03.png" height="75" width="550">
+        </li>
+        <li>
+          <h3>Post It!</h3>
+          <p>Now all you've got to do is spread that link around! You should probably test it fist to make sure you did everything correctly, but assuming you did, go out there and get that guest list credit. What does it look like when you get it correct? When you load up your super-cool custom link in the browser, you'll notice that your name is now automatically added to the 'Promoter' field.</p>
+          <img src="promotercredit04.png" height="180" width="550">
+        </li>
+      </ol>
+      <h2>Questions?</h2>
+      <p>If you need assistance, or just can't figure it out, shoot me an email: <a href="mailto:justin@betanightclub.com">justin@betanightclub.com</a> Otherwise, happy promoting, people! See you on the dance floor.</p>
+    </div>
+  </body>
+</html>
