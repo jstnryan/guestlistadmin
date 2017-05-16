@@ -161,7 +161,7 @@
               <label for="user_header">Header Image:</label>
             </td>
             <td>
-              <!-- <input type="file" id="user_header" name="user_header" /> --
+              !-- <input type="file" id="user_header" name="user_header" /> --
               <input type="text" id="user_header" name="user_header" /><br />
               <span class="smalltext">Filename of custom image ("glheader_drgon.jpg"), leave blank for default.</span>
             </td>

@@ -63,7 +63,9 @@
 
   function getusersselect($showinactive = false, $selected = NULL, $showgod = FALSE) {
     //$query = "SELECT id, name FROM users WHERE (type = 'promoter' OR type = 'artist') AND (status = 'active'";
-    $query = "SELECT id, name FROM users WHERE (status = 'active'";
+    $query = "SELECT id, name, type";
+    if ($showinactive) { $query .= ", status"; }
+    $query .= " FROM users WHERE (status = 'active'";
     if ($showinactive) { $query .= " OR status = 'inactive'"; }
     if (!$showgod) { $query .= ") AND (type != 'god'"; }
     $query .= ") ORDER BY name ASC";
@@ -71,7 +73,10 @@
     while ($row = mysql_fetch_object($result)) {
       $sel = '';
       if ($row->id == $selected) { $sel = '" selected="selected'; }
-      echo '<option value="'.$row->id.$sel.'">'.$row->name.'</option>';
+      $type = '';
+      if ($row->type !== 'artist') { $type = ' ['.strtoupper($row->type).']'; }
+      if ($showinactive && $row->status == 'inactive') { $type .= ' [INACTIVE]'; }
+      echo '<option value="'.$row->id.$sel.'">'.$row->name.$type.'</option>';
     }
   } //getusersselect()
   function getmonthsselect($month = NULL) {
