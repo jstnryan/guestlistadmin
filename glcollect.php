@@ -1,6 +1,7 @@
 <?php
   include "gldb.php";       //database functions
   include "glsettings.php"; //misc. program settings
+  date_default_timezone_set($settings['expiration']['timezone']);
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -262,7 +263,8 @@ END;
           break;
         default:
           if ($event->year.sprintf("%02d", $event->month).sprintf("%02d", $event->day) >= date('Ymd')) {
-            if (($event->year.sprintf("%02d", $event->month).sprintf("%02d", $event->day) == date('Ymd')) && (($settings['expiration']['hour'] <= date('G')) || (($settings['expiration']['hour'] == date('G')) && ($settings['expiration']['minute'] <= date('i'))))) {
+            //if (($event->year.sprintf("%02d", $event->month).sprintf("%02d", $event->day) == date('Ymd')) && (($settings['expiration']['hour'] <= date('G')) || (($settings['expiration']['hour'] == date('G')) && ($settings['expiration']['minute'] <= date('i'))))) {
+            if (($event->year.sprintf("%02d", $event->month).sprintf("%02d", $event->day) == date('Ymd')) && (($event->expiration_hour <= date('G')) || (($event->expiration_hour == date('G')) && ($event->expiration_minute <= date('i'))))) {
               //expired
               show_error_page('expired');
             } else {

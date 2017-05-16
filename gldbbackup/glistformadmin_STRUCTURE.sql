@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 16, 2017 at 08:12 AM
+-- Generation Time: May 16, 2017 at 10:05 AM
 -- Server version: 5.5.25a
 -- PHP Version: 5.4.4
 
@@ -46,6 +46,8 @@ CREATE TABLE IF NOT EXISTS `events` (
   `maxsub_21` int(11) NOT NULL,
   `maxsub_18` int(11) NOT NULL,
   `status` varchar(255) NOT NULL,
+  `expire_hour` tinyint(4) NOT NULL,
+  `expire_minute` tinyint(4) NOT NULL,
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -68,6 +70,8 @@ CREATE TABLE IF NOT EXISTS `events_archive` (
   `maxsub_21` int(11) NOT NULL,
   `maxsub_18` int(11) NOT NULL,
   `status` varchar(255) NOT NULL,
+  `expire_hour` tinyint(4) NOT NULL,
+  `expire_minute` tinyint(4) NOT NULL,
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

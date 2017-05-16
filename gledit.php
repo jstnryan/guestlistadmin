@@ -50,7 +50,7 @@
     }
 ?>
       <form name="settings" action="?a=settings_update" method="POST">
-        <h3>Expiration:</h3>
+        <h3>List RSVP Expiration:</h3>
         <table class="formtable">
           <tr>
             <td>
@@ -63,7 +63,7 @@
           </tr>
           <tr>
             <td>
-              <label for="settings_hour">Expire Time, <b>Hour</b>:</label>
+              <label for="settings_hour">Default Expire Time, <b>Hour</b>:</label>
             </td>
             <td>
               <select id="settings_hour" name="settings_hour">
@@ -81,7 +81,7 @@
           </tr>
           <tr>
             <td>
-              <label for="settings_minute">Expire Time, <b>Minute</b>:</label>
+              <label for="settings_minute">Default Expire Time, <b>Minute</b>:</label>
             </td>
             <td>
               <select id="settings_minute" name="settings_minute">

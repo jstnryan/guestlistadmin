@@ -1,6 +1,7 @@
 <?php
   include "gldb.php";       //database functions
   include "glsettings.php"; //misc. program settings
+  date_default_timezone_set($settings['expiration']['timezone']);
 
   include "gllogin.php";    //login form
   include "glview.php";     //list of events

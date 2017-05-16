@@ -12,7 +12,7 @@
 
   function event_update() {
     if (empty($_POST['update_event'])) { show_event(); return; }
-    $query = "UPDATE events SET user = '$_POST[update_user]', year = '$_POST[update_year]', month = '$_POST[update_month]', day = '$_POST[update_day]', headliner = '$_POST[update_headliner]', pricing_21 = '$_POST[update_pricing_21]', pricing_18 = '$_POST[update_pricing_18]', maxsub = '$_POST[update_maxsub]', maxsub_21 = '$_POST[update_maxsub_21]', maxsub_18 = '$_POST[update_maxsub_18]'";
+    $query = "UPDATE events SET user = '$_POST[update_user]', year = '$_POST[update_year]', month = '$_POST[update_month]', day = '$_POST[update_day]', headliner = '$_POST[update_headliner]', pricing_21 = '$_POST[update_pricing_21]', pricing_18 = '$_POST[update_pricing_18]', maxsub = '$_POST[update_maxsub]', maxsub_21 = '$_POST[update_maxsub_21]', maxsub_18 = '$_POST[update_maxsub_18]', expire_hour = '$_POST[update_expire_hour]', expire_minute = '$_POST[update_expire_minute]'";
     $query .= " WHERE id = '$_POST[update_event]'";
     $res = mysql_query($query);
     if (!$res) {
@@ -42,6 +42,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
   function show_event($event = NULL, $error = NULL) {
+    global $settings;
     $e = '';
     if (!empty($event)) {
       $e = getevent($event);
@@ -203,6 +204,61 @@
           </tr>
           <tr>
             <td>
+              <h3>List RSVP Expiration:</h3>
+            </td>
+            <td>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="update_expire_hour">Expire Time, <b>Hour</b>:</label>
+            </td>
+            <td>
+              <select id="update_expire_hour" name="update_expire_hour">
+<?php
+  for ($i = 0; $i <= 23; $i++) {
+    echo '<option value="'.str_pad($i, 2, '0', STR_PAD_LEFT).'"';
+    if (!empty($event)) {
+      if ($e['expire_hour'] == $i) {
+        echo ' selected="selected"';
+      }
+    } else {
+      if ($settings['expiration']['hour'] == $i) {
+        echo ' selected="selected"';
+      }
+    }
+    echo '>'.str_pad($i, 2, '0', STR_PAD_LEFT).'</option>';
+  }
+?>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="update_expire_minute">Expire Time, <b>Minute</b>:</label>
+            </td>
+            <td>
+              <select id="update_expire_minute" name="update_expire_minute">
+<?php
+  for ($i = 0; $i <= 59; $i++) {
+    echo '<option value="'.$i.'"';
+    if (!empty($event)) {
+      if ($e['expire_minute'] == $i) {
+        echo ' selected="selected"';
+      }
+    } else {
+      if ($settings['expiration']['minute'] == $i) {
+        echo ' selected="selected"';
+      }
+    }
+    echo '>'.str_pad($i, 2, '0', STR_PAD_LEFT).'</option>';
+  }
+?>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
             </td>
             <td>
               <input type="submit" name="update_submit" value="submit" />
@@ -290,6 +346,10 @@
           if (obj['pricing_18']) { document.getElementById('update_pricing_18').value = obj['pricing_18']; }
           //18+ limit
           if (obj['maxsub_18']) { document.getElementById('update_maxsub_18').value = obj['maxsub_18']; }
+          //RSVP Espire, hour
+          if (obj['expire_hour']) { document.getElementById('update_expire_hour').value = obj['expire_hour']; }
+          //RSVP Espire, minute
+          if (obj['expire_minute']) { document.getElementById('update_expire_minute').value = obj['expire_minute']; }
       }
       var sel = document.getElementById("update_event");
       sel.onchange = function(){_SU3.ajax("?a=ajax_event&e="+sel.options[sel.selectedIndex].value, processResponse);};
