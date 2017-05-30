@@ -108,6 +108,10 @@
     //EX: January
     return date("F", mktime(21,0,0,$month,$day,$year));
   }
+  function getmonthname_threechar($year, $month, $day) {
+    //EX: Mar
+    return date("M", mktime(21,0,0,$month,$day,$year));
+  }
   function getlancedatestring($year, $month, $day) {
     return date('l | M d', mktime(21,0,0,$month,$day,$year));
   } //getlancedatestring($year, $month, $day)

@@ -9,8 +9,8 @@
     }
     $maxsub18 = $_POST['event_maxsub_18'];
     if ($_POST['event_pricing_18'] == 'NN,NN') { $maxsub18 = '0'; }
-    $query = "INSERT INTO events (id, user, year, month, day, headliner, pricing_21, pricing_18, maxsub, maxsub_21, maxsub_18, status)";
-    $query .= " VALUES ('$newid', $_POST[event_user], $_POST[event_year], $_POST[event_month], $_POST[event_day], '$_POST[event_headliner]', '$_POST[event_pricing_21]', '$_POST[event_pricing_18]', $_POST[event_maxsub], $_POST[event_maxsub_21], $maxsub18, 'active')";
+    $query = "INSERT INTO events (id, user, year, month, day, headliner, pricing_21, pricing_18, maxsub, maxsub_21, maxsub_18, status, expire_hour, expire_minute)";
+    $query .= " VALUES ('$newid', $_POST[event_user], $_POST[event_year], $_POST[event_month], $_POST[event_day], '$_POST[event_headliner]', '$_POST[event_pricing_21]', '$_POST[event_pricing_18]', $_POST[event_maxsub], $_POST[event_maxsub_21], $maxsub18, 'active', $_POST[event_expire_hour], $_POST[event_expire_minute])";
     $res = mysql_query($query);
     if (!$res) {
       $error = "I'm running out of patience for your shennanigans. Get your shit together.";
@@ -138,6 +138,7 @@
   } //getprice18()
 
   function show_create($year = NULL, $month = NULL, $day = NULL, $headliner = NULL, $limit = NULL, $price21 = NULL, $limit21 = NULL, $price18 = NULL, $limit18 = NULL, $error = NULL) {
+    global $settings;
 ?>
 <?= getheader(); ?>
 <?= navigation(); ?>
@@ -272,6 +273,61 @@
             <td>
               <input type="text" name="event_maxsub_18" id="event_maxsub_18" pattern="[+-]?[0-9]+" required="required" value="<?php if (!empty($limit18)) { echo $limit18; } else { echo '-1'; } ?>" /><br />
               <span class="smalltext">A value of negative 1 (-1) is limited only by the total, or unlimited if total is also -1.</span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h3>List RSVP Expiration:</h3>
+            </td>
+            <td>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="event_expire_hour">Expire Time, <b>Hour</b>:</label>
+            </td>
+            <td>
+              <select id="event_expire_hour" name="event_expire_hour">
+<?php
+  for ($i = 0; $i <= 23; $i++) {
+    echo '<option value="'.str_pad($i, 2, '0', STR_PAD_LEFT).'"';
+    if (!empty($event)) {
+      if ($e['expire_hour'] == $i) {
+        echo ' selected="selected"';
+      }
+    } else {
+      if ($settings['expiration']['hour'] == $i) {
+        echo ' selected="selected"';
+      }
+    }
+    echo '>'.str_pad($i, 2, '0', STR_PAD_LEFT).'</option>';
+  }
+?>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="event_expire_minute">Expire Time, <b>Minute</b>:</label>
+            </td>
+            <td>
+              <select id="event_expire_minute" name="event_expire_minute">
+<?php
+  for ($i = 0; $i <= 59; $i++) {
+    echo '<option value="'.$i.'"';
+    if (!empty($event)) {
+      if ($e['expire_minute'] == $i) {
+        echo ' selected="selected"';
+      }
+    } else {
+      if ($settings['expiration']['minute'] == $i) {
+        echo ' selected="selected"';
+      }
+    }
+    echo '>'.str_pad($i, 2, '0', STR_PAD_LEFT).'</option>';
+  }
+?>
+              </select>
             </td>
           </tr>
           <tr>

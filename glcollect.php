@@ -20,6 +20,39 @@
       $template = new stdClass();
       $template->day = getdayofweek($event->year, $event->month, $event->day);
       $template->month = getmonthname($event->year, $event->month, $event->day);
+      $template->featuredimage = "template/feature-{$template->day}.jpg";
+
+      //The following uses the current time to try to 'guess' if TJ's emailer images exist yet, and if so, links to them instead of the day-branded images
+      //  http://ftp.betanightclub.com/assets/images/email/2017/may/051617/2.jpg
+      /*
+      $dayval = 0;
+      switch ($template->day) {
+        case "Monday":
+          $dayval = -1;
+          break;
+        case "Tuesday":
+          $dayval = 0;
+          break;
+        case "Wednesday":
+          $dayval = 1;
+          break;
+        case "Thursday":
+          $dayval = 2;
+          break;
+        case "Friday":
+          $dayval = 3;
+          break;
+        case "Saturday":
+          $dayval = 4;
+          break;
+        case "Sunday":
+          $dayval = 5;
+          break;
+      }
+      if (mktime(date('H'), date('i'), date('s'), $event->month, $event->day - $dayval - 1, $event->year) < time()) {
+        $template->featuredimage = 'http://ftp.betanightclub.com/assets/images/email/'.$event->year.'/'.strtolower(getmonthname_threechar($event->year, $event->month, $event->day)).'/'.date('mdy', mktime(21,0,0,$event->month,$event->day - $dayval,$event->year)).'/'.$dayval.'.jpg';
+      }
+      */
 
 /*
       $banner = "";
@@ -264,7 +297,7 @@ END;
         default:
           if ($event->year.sprintf("%02d", $event->month).sprintf("%02d", $event->day) >= date('Ymd')) {
             //if (($event->year.sprintf("%02d", $event->month).sprintf("%02d", $event->day) == date('Ymd')) && (($settings['expiration']['hour'] <= date('G')) || (($settings['expiration']['hour'] == date('G')) && ($settings['expiration']['minute'] <= date('i'))))) {
-            if (($event->year.sprintf("%02d", $event->month).sprintf("%02d", $event->day) == date('Ymd')) && (($event->expiration_hour <= date('G')) || (($event->expiration_hour == date('G')) && ($event->expiration_minute <= date('i'))))) {
+            if (($event->year.sprintf("%02d", $event->month).sprintf("%02d", $event->day) == date('Ymd')) && (($event->expire_hour <= date('G')) || (($event->expire_hour == date('G')) && ($event->expire_minute <= date('i'))))) {
               //expired
               show_error_page('expired');
             } else {

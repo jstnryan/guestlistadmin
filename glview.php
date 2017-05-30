@@ -120,13 +120,13 @@ END;
     if ($getcurrent) {
       $query = "SELECT id,";
       if ($user->type == 'admin' || $user->type == 'promoter' || $user->type == 'god') { $query .= " user,"; }
-      $query .= " year, month, day, headliner, pricing_21, pricing_18, maxsub, maxsub_21, maxsub_18, status FROM events WHERE";
+      $query .= " year, month, day, headliner, pricing_21, pricing_18, maxsub, maxsub_21, maxsub_18, status, expire_hour, expire_minute FROM events WHERE";
       if ($user->type == 'promoter') { $query .= " ((user = '" . $userid . "') OR (user IN (SELECT id FROM users WHERE association = '$user->id'))) AND"; } elseif ($user->type != 'admin' && $user->type != 'god') { $query .= " (user = '" . $userid . "') AND"; }
       $query .= " (CONCAT(LPAD(year, 4, '0'), LPAD(month, 2, '0'), LPAD(day, 2, '0')) >= '" . date('Ymd') . "') ORDER BY CONCAT(LPAD(year, 4, '0'), LPAD(month, 2, '0'), LPAD(day, 2, '0')) ASC";
     } else {
       $query = "SELECT id,";
       if ($user->type == 'admin' || $user->type == 'promoter' || $user->type == 'god') { $query .= " user,"; }
-      $query .= " year, month, day, headliner, pricing_21, pricing_18, maxsub, maxsub_21, maxsub_18, status FROM events WHERE";
+      $query .= " year, month, day, headliner, pricing_21, pricing_18, maxsub, maxsub_21, maxsub_18, status, expire_hour, expire_minute FROM events WHERE";
       if ($user->type == 'promoter') { $query .= " ((user = '" . $userid . "') OR (user IN (SELECT id FROM users WHERE association = '$user->id'))) AND"; } elseif ($user->type != 'admin' && $user->type != 'god') { $query .= " (user = '" . $userid . "') AND"; }
       $query .= " (CONCAT(LPAD(year, 4, '0'), LPAD(month, 2, '0'), LPAD(day, 2, '0')) < '" . date('Ymd') . "') ORDER BY CONCAT(LPAD(year, 4, '0'), LPAD(month, 2, '0'), LPAD(day, 2, '0')) DESC";
     }
@@ -148,9 +148,15 @@ END;
     $remain = "";
     $link = "";
     if ($activeevent) {
-      $end = new DateTime($row->year . '-' . $row->month . '-' . $row->day . 'T' . $settings['expiration']['hour'] . ':' . $settings['expiration']['minute'] . ':00', new DateTimeZone('America/Denver'));
+      //$end = new DateTime($row->year . '-' . $row->month . '-' . $row->day . 'T' . $settings['expiration']['hour'] . ':' . $settings['expiration']['minute'] . ':00', new DateTimeZone('America/Denver'));
+      $end = new DateTime($row->year . '-' . $row->month . '-' . $row->day . 'T' . $row->expire_hour . ':' . $row->expire_minute . ':00', new DateTimeZone('America/Denver'));
       $diff = $end->diff(new DateTime());
-      $remain = $diff->format("<br />Remain: <b>%ad, %hh, %im</b>");
+      $remain = "<br>";
+      if ($diff->invert == 1) {
+        $remain = $diff->format("<br />Remain: <b>%ad, %hh, %im</b>");
+      } else {
+        $remain = "<br>RSVP time has expired";
+      }
       $link = '<br />Form link: <a href="'.get_public_path()."/".$row->id.'" target="_blank">'.get_public_path()."/".$row->id.'</a>'; //include "glcreate.php"!
     }
     $options = <<<END
