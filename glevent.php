@@ -1,9 +1,10 @@
 <?php
   function getevent($event) {
+    global $db;
     $e = "";
     $query = "SELECT * FROM events WHERE (id = '$event') LIMIT 1";
-    $result = mysql_query($query) or die('Query failed: ' . mysql_error());
-    while ($row = mysql_fetch_assoc($result)) { $e = $row; }
+    $result = mysqli_query($db, $query) or die('Query failed: ' . mysqli_error($db));
+    while ($row = mysqli_fetch_assoc($result)) { $e = $row; }
     return $e;
   }
   function ajax_event($event) {
@@ -11,10 +12,11 @@
   } //ajax_event($event)
 
   function event_update() {
+    global $db;
     if (empty($_POST['update_event'])) { show_event(); return; }
     $query = "UPDATE events SET user = '$_POST[update_user]', year = '$_POST[update_year]', month = '$_POST[update_month]', day = '$_POST[update_day]', headliner = '$_POST[update_headliner]', pricing_21 = '$_POST[update_pricing_21]', pricing_18 = '$_POST[update_pricing_18]', maxsub = '$_POST[update_maxsub]', maxsub_21 = '$_POST[update_maxsub_21]', maxsub_18 = '$_POST[update_maxsub_18]', expire_hour = '$_POST[update_expire_hour]', expire_minute = '$_POST[update_expire_minute]'";
     $query .= " WHERE id = '$_POST[update_event]'";
-    $res = mysql_query($query);
+    $res = mysqli_query($db, $query);
     if (!$res) {
       //$error = "I'm running out of patience for your shennanigans. Get your shit together.";
       $error = $query;
@@ -25,13 +27,14 @@
   } //event_update()
 
   function geteventsselect($selected = NULL) {
+    global $db;
     //$query = "SELECT id, name FROM users WHERE (type = 'promoter' OR type = 'artist') AND (status = 'active'";
     $query = "SELECT events.id, events.year, events.month, events.day, events.headliner, users.name";
     $query .= " FROM events INNER JOIN users ON events.user = users.id";
     $query .= " WHERE (CONCAT(LPAD(year, 4, '0'), LPAD(month, 2, '0'), LPAD(day, 2, '0')) >= '" . date('Ymd') . "')";
     $query .= " ORDER BY CONCAT(LPAD(year, 4, '0'), LPAD(month, 2, '0'), LPAD(day, 2, '0')) ASC";
-    $result = mysql_query($query) or die('Query failed: ' . mysql_error());
-    while ($row = mysql_fetch_object($result)) {
+    $result = mysqli_query($db, $query) or die('Query failed: ' . mysqli_error($db));
+    while ($row = mysqli_fetch_object($result)) {
       $sel = '';
       if ($row->id == $selected) { $sel = '" selected="selected'; }
       echo '<option value="'.$row->id.$sel.'">'.$row->id.' :: '.getcompactdatestring($row->year, $row->month, $row->day).' :: '.$row->name.'</option>';

@@ -1,11 +1,11 @@
 <?php
   function account_update() {
-    global $user;
+    global $db, $user;
 
     $query = "UPDATE users SET name = '$_POST[account_name]', email = '$_POST[account_email]', artistlinks = '$_POST[account_links]', customfields = $_POST[account_fields]";
     if (!empty($_POST['account_pass'])) { $query .= ", password = '$_POST[account_pass]'"; }
     $query .= " WHERE id = $user->id";
-    $res = mysql_query($query);
+    $res = mysqli_query($db, $query);
     if (!$res) {
       $error = "You've really done it now. This mistake of yours could have grave consequences. Or maybe it wont. Try again, if you dare!";
     } else {

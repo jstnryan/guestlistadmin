@@ -1,9 +1,10 @@
 <?php
   function event_create() {
+    global $db;
     $newid = get_random_string(6);
     $query = "SELECT id FROM events WHERE id = '$newid'";
-    $res = mysql_query($query);
-    if (mysql_num_rows($res) > 0) {
+    $res = mysqli_query($db, $query);
+    if (mysqli_num_rows($res) > 0) {
       event_create();
       return;
     }
@@ -11,7 +12,7 @@
     if ($_POST['event_pricing_18'] == 'NN,NN') { $maxsub18 = '0'; }
     $query = "INSERT INTO events (id, user, year, month, day, headliner, pricing_21, pricing_18, maxsub, maxsub_21, maxsub_18, status, expire_hour, expire_minute)";
     $query .= " VALUES ('$newid', $_POST[event_user], $_POST[event_year], $_POST[event_month], $_POST[event_day], '$_POST[event_headliner]', '$_POST[event_pricing_21]', '$_POST[event_pricing_18]', $_POST[event_maxsub], $_POST[event_maxsub_21], $maxsub18, 'active', $_POST[event_expire_hour], $_POST[event_expire_minute])";
-    $res = mysql_query($query);
+    $res = mysqli_query($db, $query);
     if (!$res) {
       $error = "I'm running out of patience for your shennanigans. Get your shit together.";
       //$error = $query;
@@ -62,6 +63,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
   function getusersselect($showinactive = false, $selected = NULL, $showgod = FALSE) {
+    global $db;
     //$query = "SELECT id, name FROM users WHERE (type = 'promoter' OR type = 'artist') AND (status = 'active'";
     $query = "SELECT id, name, type";
     if ($showinactive) { $query .= ", status"; }
@@ -69,8 +71,8 @@
     if ($showinactive) { $query .= " OR status = 'inactive'"; }
     if (!$showgod) { $query .= ") AND (type != 'god'"; }
     $query .= ") ORDER BY name ASC";
-    $result = mysql_query($query) or die('Query failed: ' . mysql_error());
-    while ($row = mysql_fetch_object($result)) {
+    $result = mysqli_query($db, $query) or die('Query failed: ' . mysqli_error($db));
+    while ($row = mysqli_fetch_object($result)) {
       $sel = '';
       if ($row->id == $selected) { $sel = '" selected="selected'; }
       $type = '';

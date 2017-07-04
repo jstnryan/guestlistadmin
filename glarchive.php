@@ -1,12 +1,13 @@
 <?php
   //AJAX function
   function ajax_email_a($events) {
+    global $db;
     $output['action'] = 'email';
     $output['event'] = $events;
     $output['result'] = "<textarea>";
     $query = "SELECT email FROM signups WHERE event_archive IN ('" . implode("', '", explode(',', $events)) . "')";
-    $res = mysql_query($query);
-    while ($row = mysql_fetch_assoc($res)) {
+    $res = mysqli_query($db, $query);
+    while ($row = mysqli_fetch_assoc($res)) {
       $output['result'] .= $row['email']."\n";
     }
     $output['result'] .= "</textarea>";
@@ -15,24 +16,24 @@
 
 
   function getarchivedevents($timespan = NULL) {
-    global $user;
+    global $db, $user;
 
     $query = "SELECT id, user, year, month, day, headliner, pricing_21, pricing_18, maxsub, maxsub_21, maxsub_18, status FROM events_archive";
     //if ($user->type == 'promoter') { $query .= " ((user = '" . $userid . "') OR (user IN (SELECT id FROM users WHERE association = '$user->id'))) AND"; } elseif ($user->type != 'admin') { $query .= " (user = '" . $userid . "') AND"; }
     $query .= " ORDER BY CONCAT(LPAD(year, 4, '0'), LPAD(month, 2, '0'), LPAD(day, 2, '0')) DESC";
-    $result = mysql_query($query) or die('Query failed: ' . mysql_error());
+    $result = mysqli_query($db, $query) or die('Query failed: ' . mysqli_error($db));
 
-    while ($row = mysql_fetch_object($result)) {
+    while ($row = mysqli_fetch_object($result)) {
       echo eventoutput_a($row);
     }
   } //geteventsbyuser_a()
   function eventoutput_a($row) {
-    global $user, $settings;
+    global $db, $user, $settings;
 
     //signup totals:
-    $count_total = mysql_result(mysql_query("SELECT COUNT(*) FROM signups_archive WHERE event = '$row->id'"), 0);
-    $count_21 = mysql_result(mysql_query("SELECT COUNT(*) FROM signups_archive WHERE event = '$row->id' AND age >= '21'"), 0);
-    $count_18 = mysql_result(mysql_query("SELECT COUNT(*) FROM signups_archive WHERE event = '$row->id' AND age <= '20'"), 0);
+    $count_total = mysqli_result(mysqli_query($db, "SELECT COUNT(*) FROM signups_archive WHERE event = '$row->id'"), 0);
+    $count_21 = mysqli_result(mysqli_query($db, "SELECT COUNT(*) FROM signups_archive WHERE event = '$row->id' AND age >= '21'"), 0);
+    $count_18 = mysqli_result(mysqli_query($db, "SELECT COUNT(*) FROM signups_archive WHERE event = '$row->id' AND age <= '20'"), 0);
 
     $eventdate = getlancedatestring_view($row->year, $row->month, $row->day);
     $remain = "";

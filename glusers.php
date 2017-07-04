@@ -1,13 +1,14 @@
 <?php
   //AJAX function
   function ajax_retrieve($userid) {
+    global $db;
     $who = "";
     if ($userid == 'NEW') {
       $who = '';
     } else {
       $query = "SELECT type, name, email, artistlinks, promoterlinks, customfields, association, status FROM users WHERE (id = '$userid') LIMIT 1";
-      $result = mysql_query($query) or die('Query failed: ' . mysql_error());
-      while ($row = mysql_fetch_object($result)) {
+      $result = mysqli_query($db, $query) or die('Query failed: ' . mysqli_error($db));
+      while ($row = mysqli_fetch_object($result)) {
         $who['type'] = $row->type;
         $who['name'] = $row->name;
         $who['email'] = $row->email;
@@ -22,6 +23,7 @@
   } //ajax_retrieve()
 
   function user_update() {
+    global $db;
     $status = "active";
     if (isset($_POST['user_pwreset'])) { $status = "reset"; }
     if (isset($_POST['user_delete'])) { $status = "inactive"; }
@@ -48,7 +50,7 @@
       $query = "UPDATE users SET type = '$_POST[user_type]', name = '$_POST[user_name]', email = '$_POST[user_email]', artistlinks = '$usrlinks', promoterlinks = '$prolinks', customfields = $_POST[user_fields], association = $_POST[user_association], status = '$status'";
       $query .= " WHERE id = $_POST[user_id]";
     }
-    $res = mysql_query($query);
+    $res = mysqli_query($db, $query);
     if (!$res) {
       $error = "Why do you have to fuck with people's shit like that? I don't even think you know what you're supposed to be doing.";
       //$error = $query;

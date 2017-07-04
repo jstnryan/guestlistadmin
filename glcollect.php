@@ -8,12 +8,12 @@
 
   function show_collection_page($event, $limit21 = false, $limit18 = false) {
     if ($limit21 && $limit18) { show_error_page('limit'); return; } //should never hit this block, but the list is full, if so
-    global $settings;
+    global $db, $settings;
 
     //get artist details
     $query = "SELECT id, name, artistlinks, promoterlinks, customfields, association FROM users WHERE id = $event->user LIMIT 1";
-    $res = mysql_query($query);
-    while ($artist = mysql_fetch_object($res)) {
+    $res = mysqli_query($db, $query);
+    while ($artist = mysqli_fetch_object($res)) {
 
       $title = getlancedatestring($event->year, $event->month, $event->day)." :: ".$artist->name."&#39;s Guest List :: ".$event->headliner;
 
@@ -120,10 +120,11 @@
   } //show_collection_page()
 
   function collect_signup($event) {
+    global $db;
     //check for duplicates:
-    $query = "SELECT COUNT(*) FROM signups WHERE event = '$_POST[signup_event]' AND name = '" . mysql_real_escape_string($_POST['signup_name']) . "' AND email = '" . mysql_real_escape_string($_POST['signup_email']) . "' AND age = '$_POST[signup_age]' AND gender = '$_POST[signup_gender]'";
-    $res = mysql_query($query);
-    if (mysql_result($res, 0) > 0) {
+    $query = "SELECT COUNT(*) FROM signups WHERE event = '$_POST[signup_event]' AND name = '" . mysqli_real_escape_string($_POST['signup_name']) . "' AND email = '" . mysqli_real_escape_string($_POST['signup_email']) . "' AND age = '$_POST[signup_age]' AND gender = '$_POST[signup_gender]'";
+    $res = mysqli_query($db, $query);
+    if (mysqli_result($res, 0) > 0) {
       show_error_page('duplicate');
     } else {
       $query = "INSERT INTO signups (event, name, email, age, gender";
@@ -132,14 +133,14 @@
           if (isset($_POST['signup_custom3'])) { $query .= ", custom3";
             if (isset($_POST['signup_custom4'])) { $query .= ", custom4"; }
           }}}
-      $query .= ") VALUES ('$event->id', '" . mysql_real_escape_string($_POST['signup_name']) . "', '" . mysql_real_escape_string($_POST['signup_email']) . "', '$_POST[signup_age]', '$_POST[signup_gender]'";
-      if (isset($_POST['signup_custom1'])) { $query .= ", '" . mysql_real_escape_string($_POST['signup_custom1']) . "'";
-        if (isset($_POST['signup_custom2'])) { $query .= ", '" . mysql_real_escape_string($_POST['signup_custom2']) . "'";
-          if (isset($_POST['signup_custom3'])) { $query .= ", '" . mysql_real_escape_string($_POST['signup_custom3']) . "'";
-            if (isset($_POST['signup_custom4'])) { $query .= ", '" . mysql_real_escape_string($_POST['signup_custom4']) . "'"; }
+      $query .= ") VALUES ('$event->id', '" . mysqli_real_escape_string($_POST['signup_name']) . "', '" . mysqli_real_escape_string($_POST['signup_email']) . "', '$_POST[signup_age]', '$_POST[signup_gender]'";
+      if (isset($_POST['signup_custom1'])) { $query .= ", '" . mysqli_real_escape_string($_POST['signup_custom1']) . "'";
+        if (isset($_POST['signup_custom2'])) { $query .= ", '" . mysqli_real_escape_string($_POST['signup_custom2']) . "'";
+          if (isset($_POST['signup_custom3'])) { $query .= ", '" . mysqli_real_escape_string($_POST['signup_custom3']) . "'";
+            if (isset($_POST['signup_custom4'])) { $query .= ", '" . mysqli_real_escape_string($_POST['signup_custom4']) . "'"; }
           }}}
       $query .= ")";
-      $res2 = mysql_query($query);
+      $res2 = mysqli_query($db, $query);
       if (!$res2) {
         show_error_page('database');
       } else {
@@ -149,13 +150,13 @@
   } //collect_signup()
 
   function show_confirmation_page($event, $user, $age) {
-    global $settings;
+    global $db, $settings;
 
     //int representing the time/date of show for use in date/time formatting on this page
     $showtime = mktime(21,0,0,$event->month,$event->day,$event->year);
 
-    $res = mysql_query("SELECT name FROM users WHERE id = '$event->user' LIMIT 1");
-    while ($row = mysql_fetch_assoc($res)) { $artist = $row['name']; }
+    $res = mysqli_query($db, "SELECT name FROM users WHERE id = '$event->user' LIMIT 1");
+    while ($row = mysqli_fetch_assoc($res)) { $artist = $row['name']; }
 
     $banner = "";
     if (file_exists('glheader/glheader_'.$event->user.'.jpg')) { $banner = '<style type="text/css">#masthead {background-image:url("glheader/glheader_'.$event->user.'.jpg")};</style>'; }
@@ -282,11 +283,11 @@ END;
 
   dbconnect();
   $query = "SELECT * FROM events WHERE id = '$_GET[e]' LIMIT 1";
-  $res = mysql_query($query);
-  if (mysql_num_rows($res) == 0) {
+  $res = mysqli_query($db, $query);
+  if (mysqli_num_rows($res) == 0) {
     show_error_page('invalid');
   } else {
-    while ($event = mysql_fetch_object($res)) {
+    while ($event = mysqli_fetch_object($res)) {
       switch ($event->status) {
         case "closed":
           show_error_page('closed');
@@ -306,11 +307,11 @@ END;
               $atlimit18 = false; $atlimit21 = false; $atlimitall = false;
               $count18 = 0; $count21 = 0; $countall = 0;
               $query_count18 = "SELECT COUNT(*) as count FROM signups WHERE event = '$event->id' AND age <= 20";
-              $res_18 = mysql_query($query_count18);
-              while ($res18 = mysql_fetch_object($res_18)) { $count18 = $res18->count; }
+              $res_18 = mysqli_query($db, $query_count18);
+              while ($res18 = mysqli_fetch_object($res_18)) { $count18 = $res18->count; }
               $query_count21 = "SELECT COUNT(*) as count FROM signups WHERE event = '$event->id' AND age >= 21";
-              $res_21 = mysql_query($query_count21);
-              while ($res21 = mysql_fetch_object($res_21)) { $count21 = $res21->count; }
+              $res_21 = mysqli_query($db, $query_count21);
+              while ($res21 = mysqli_fetch_object($res_21)) { $count21 = $res21->count; }
               $countall = $count18 + $count21;
               if (($event->pricing_18 != 'NN,NN') && ($event->maxsub_18 != -1 && $count18 >= $event->maxsub_18)) { $atlimit18 = true; }
               if ($event->maxsub_21 != -1 && $count21 >= $event->maxsub_21) { $atlimit21 = true; }

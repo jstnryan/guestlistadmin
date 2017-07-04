@@ -5,9 +5,9 @@ Options -Indexes
 #Header set X-Tesla "If your hate could be turned into electricity, it would light up the whole world."
 
 #Force timezone to MST/MDT (GoDaddy's is MST)
-##THIS LINE DOES NOT WORK ON GODADDY!
+##FIRST LINE DOES NOT WORK ON GODADDY, NEITHER WORKS WITH HOSTGATOR
 #php_value date.timezone "America/Denver"
-SetEnv TZ America/Denver
+#SetEnv TZ America/Denver
 
 Options +FollowSymlinks
 RewriteEngine On

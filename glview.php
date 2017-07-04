@@ -1,16 +1,17 @@
 <?php
   //AJAX function
   function ajax_status($event, $status) {
+    global $db;
     if (empty($status) || !isset($status) || is_null($status) || $status == 'cancel') {
       $result = false;
     } else {
       $query = "UPDATE events SET status = '$status' WHERE id = '$event' LIMIT 1";
-      $result = mysql_query($query) or die('Query failed: ' . mysql_error());
+      $result = mysqli_query($db, $query) or die('Query failed: ' . mysqli_error($db));
     }
     if (!$result) {
       $query = "SELECT status FROM events WHERE id = '$event' LIMIT 1";
-      $res = mysql_query($query);
-      while ($row = mysql_fetch_assoc($res)) { $output['result'] = $row['status']; }
+      $res = mysqli_query($db, $query);
+      while ($row = mysqli_fetch_assoc($res)) { $output['result'] = $row['status']; }
     } else {
       $output['result'] = $status;
     }
@@ -20,6 +21,7 @@
   } //ajax_status($event, $status)
 
   function ajax_view($event, $archive = '') {
+    global $db;
     $output['action'] = 'view';
     $output['event'] = $event;
     $output['result'] = <<<'END'
@@ -40,8 +42,8 @@
     <tbody>
 END;
     $query = "SELECT time, name, email, age, gender, custom1, custom2, custom3, custom4 FROM signups$archive WHERE event = '$event'";
-    $res = mysql_query($query);
-    while ($row = mysql_fetch_assoc($res)) {
+    $res = mysqli_query($db, $query);
+    while ($row = mysqli_fetch_assoc($res)) {
       $output['result'] .= <<<END
       <tr>
         <td class="nowrap">$row[time]</td>
@@ -64,18 +66,19 @@ END;
   } //ajax_view($event)
 
   function ajax_export($event, $archive = '') {
+    global $db;
     $output['action'] = 'export';
     $output['event'] = $event;
     $output['result'] = "<textarea>21+ GUESTS:\n";
     $query = "SELECT name FROM signups$archive WHERE event = '$event' AND age >= '21'";
-    $res = mysql_query($query);
-    while ($row = mysql_fetch_assoc($res)) {
+    $res = mysqli_query($db, $query);
+    while ($row = mysqli_fetch_assoc($res)) {
       $output['result'] .= $row['name']."\n";
     }
     $output['result'] .= "\n18+ GUESTS:";
     $query = "SELECT name FROM signups$archive WHERE event = '$event' AND age <= '20'";
-    $res = mysql_query($query);
-    while ($row = mysql_fetch_assoc($res)) {
+    $res = mysqli_query($db, $query);
+    while ($row = mysqli_fetch_assoc($res)) {
       $output['result'] .= "\n".$row['name'];
     }
     $output['result'] .= "</textarea>";
@@ -83,12 +86,13 @@ END;
   } //ajax_export(event)
 
   function ajax_email($events) {
+    global $db;
     $output['action'] = 'email';
     $output['event'] = $events;
     $output['result'] = "<textarea>";
     $query = "SELECT email FROM signups WHERE event IN ('" . implode("', '", explode(',', $events)) . "')";
-    $res = mysql_query($query);
-    while ($row = mysql_fetch_assoc($res)) {
+    $res = mysqli_query($db, $query);
+    while ($row = mysqli_fetch_assoc($res)) {
       $output['result'] .= $row['email']."\n";
     }
     $output['result'] .= "</textarea>";
@@ -96,18 +100,19 @@ END;
   } //ajax_email($events)
 
   function ajax_archive($event) {
+    global $db;
     $output['action'] = 'archiveALL';
     $output['event'] = $event;
     $query_1 = "INSERT INTO events_archive SELECT * FROM events WHERE id IN ('" . implode("', '", explode(',', $event)) . "')";
     $query_2 = "DELETE FROM events WHERE id IN ('" . implode("', '", explode(',', $event)) . "')";
     $query_3 = "INSERT INTO signups_archive SELECT * FROM signups WHERE event IN ('" . implode("', '", explode(',', $event)) . "')";
     $query_4 = "DELETE FROM signups WHERE event IN ('" . implode("', '", explode(',', $event)) . "')";
-    mysql_query("START TRANSACTION");
-    if (mysql_query($query_1) && mysql_query($query_2) && mysql_query($query_3) && mysql_query($query_4)) {
-      mysql_query("COMMIT");
+    mysqli_query($db, "START TRANSACTION");
+    if (mysqli_query($db, $query_1) && mysqli_query($db, $query_2) && mysqli_query($db, $query_3) && mysqli_query($db, $query_4)) {
+      mysqli_query($db, "COMMIT");
       $output['result'] = true;
     } else {
-      mysql_query("ROLLBACK");
+      mysqli_query($db, "ROLLBACK");
       //$output['result'] = $query_1."\n".$query_2."\n".$query_3."\n".$query_4;
       $output['result'] = false;
     }
@@ -115,7 +120,7 @@ END;
   } //ajax_archive($event)
 
   function geteventsbyuser($userid, $getcurrent = true) {
-    global $user;
+    global $db, $user;
 
     if ($getcurrent) {
       $query = "SELECT id,";
@@ -130,19 +135,19 @@ END;
       if ($user->type == 'promoter') { $query .= " ((user = '" . $userid . "') OR (user IN (SELECT id FROM users WHERE association = '$user->id'))) AND"; } elseif ($user->type != 'admin' && $user->type != 'god') { $query .= " (user = '" . $userid . "') AND"; }
       $query .= " (CONCAT(LPAD(year, 4, '0'), LPAD(month, 2, '0'), LPAD(day, 2, '0')) < '" . date('Ymd') . "') ORDER BY CONCAT(LPAD(year, 4, '0'), LPAD(month, 2, '0'), LPAD(day, 2, '0')) DESC";
     }
-    $result = mysql_query($query) or die('Query failed: ' . mysql_error());
+    $result = mysqli_query($db, $query) or die('Query failed: ' . mysqli_error($db));
 
-    while ($row = mysql_fetch_object($result)) {
+    while ($row = mysqli_fetch_object($result)) {
       echo eventoutput($row, $getcurrent);
     }
   } //geteventsbyuser()
   function eventoutput($row, $activeevent = false) {
-    global $user, $settings;
+    global $db, $user, $settings;
 
     //signup totals:
-    $count_total = mysql_result(mysql_query("SELECT COUNT(*) FROM signups WHERE event = '$row->id'"), 0);
-    $count_21 = mysql_result(mysql_query("SELECT COUNT(*) FROM signups WHERE event = '$row->id' AND age >= '21'"), 0);
-    $count_18 = mysql_result(mysql_query("SELECT COUNT(*) FROM signups WHERE event = '$row->id' AND age <= '20'"), 0);
+    $count_total = mysqli_result(mysqli_query($db, "SELECT COUNT(*) FROM signups WHERE event = '$row->id'"), 0);
+    $count_21 = mysqli_result(mysqli_query($db, "SELECT COUNT(*) FROM signups WHERE event = '$row->id' AND age >= '21'"), 0);
+    $count_18 = mysqli_result(mysqli_query($db, "SELECT COUNT(*) FROM signups WHERE event = '$row->id' AND age <= '20'"), 0);
 
     $eventdate = getlancedatestring_view($row->year, $row->month, $row->day);
     $remain = "";

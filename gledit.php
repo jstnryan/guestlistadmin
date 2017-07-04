@@ -12,7 +12,7 @@
     if (!save_settings()) {
       $error = "For some reason, the Advanced Settings could not be saved. It is suspected taht al1 hellll i5 Br3^k1nq l00se on 7he sEvV#r34a.....a#42";
     } else {
-//DEPRECIATED -- Remove!
+//DEPRECATED -- Remove!
 /*
       $array = array('settings_links_beta', 'settings_links_global', 'settings_links_mahesh', 'settings_links_reload', 'settings_links_punchis', 'settings_links_submission');
       foreach ($array as $id => $name) {
